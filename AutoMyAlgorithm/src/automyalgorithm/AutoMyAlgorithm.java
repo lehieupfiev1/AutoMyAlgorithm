@@ -28,7 +28,7 @@ public class AutoMyAlgorithm {
     public static ArrayList<Double> listTotalTime;
     public static long timeRuning;
     public static double timeLifeOn;
-    public static String mPath = "D:\\Le-Hieu\\HOC TAP\\CAO HOC\\He Thong\\SensorSimulationProject-master\\SensorDemo\\";
+    public static String mPath = "E:\\HIEU\\CAO HOC\\SensorSimulationProject\\SensorDemo\\";
     
     public static void main(String[] args) {
 

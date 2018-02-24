@@ -9,10 +9,15 @@ import static automyalgorithm.SensorUtility.mListSensorNodes;
 import static automyalgorithm.SensorUtility.mListSinkNodes;
 import static automyalgorithm.SensorUtility.mListTargetNodes;
 import static automyalgorithm.SensorUtility.*;
+import ilog.concert.IloException;
+import ilog.concert.*;
+import ilog.cplex.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -498,149 +503,149 @@ public float Distance[][];// Matrix distance between two nodes
         int Vmax =0;
         //Test
         
-        for (int i =0 ; i< listPathY.size(); i++) {
-            List<PathItem> pathY = listPathY.get(i);
-            List<Double> Ty = new ArrayList<>();
-            for (int j = 0 ;j < pathY.size();j++) {
-                if (j % 2 == 0) {
-                    Ty.add(1000.0);
-                } else {
-                    Ty.add(0.0);
-                }
-
-            }
-            time.add(Ty);
-            
-            
-        }
+//        for (int i =0 ; i< listPathY.size(); i++) {
+//            List<PathItem> pathY = listPathY.get(i);
+//            List<Double> Ty = new ArrayList<>();
+//            for (int j = 0 ;j < pathY.size();j++) {
+//                if (j % 2 == 0) {
+//                    Ty.add(1000.0);
+//                } else {
+//                    Ty.add(0.0);
+//                }
+//
+//            }
+//            time.add(Ty);
+//            
+//            
+//        }
         
         
 
         if (m == 0 || n == 0) {
             return time;
         }
-//        int totalpath =0;
-//        int[] v = new int[n];
-//        for (int i = 0; i < listPathY.size(); i++) {
-//            v[i] = listPathY.get(i).size();
-//            if (Vmax < listPathY.get(i).size()) {
-//                Vmax = listPathY.get(i).size();
-//            }
-//            System.out.println("Size Path "+i+ " =" + v[i]);
-//            totalpath += v[i];
-//        }
-//        System.out.println("Total Path " + totalpath);
-//
-//        //Check Input
-////        List<List<List<Float>>> ListofListB = new ArrayList<>();
-////        for (int i = 0; i < m; i++) {
-////            List<List<Float>> ListB = new ArrayList<>();
-////            int sensor = listSenSor.get(i);
-////            for (int j = 0; j < n; j++) {
-////                List<Float> lsB = new ArrayList<>();
-////                List<PathItem> listYj = listPathY.get(j);
-////                for (int k = 0; k < v[j]; k++) {
-////                    float value = getEnergyConsumer(listYj.get(k).getPath(), sensor);
-////                    lsB.add(value);
-////                }
-////                ListB.add(lsB);
-////            }
-////            ListofListB.add(ListB);
-////        }
-//        
-//        
-////        float [][][] b = new float[m][n][Vmax];
-////        for (int i = 0; i < m; i++) {
-////            int sensor = listSenSor.get(i);
-////            for (int j = 0; j < n; j++) {
-////                List<PathItem> listYj = listPathY.get(j);
-////                for (int k = 0; k < v[j]; k++) {
-////                    b[i][j][k] = getEnergyConsumer(listYj.get(k).getPath(), sensor);
-////
-////                }
-////            }
-////        }
-//      
-//        try {
-//            //Init model
-//            IloCplex cplex = new IloCplex();
-//
-//            //Define variable
-//            IloNumVar[][] t = new IloNumVar[n][Vmax];
-//            
-//      
+        int totalpath =0;
+        int[] v = new int[n];
+        for (int i = 0; i < listPathY.size(); i++) {
+            v[i] = listPathY.get(i).size();
+            if (Vmax < listPathY.get(i).size()) {
+                Vmax = listPathY.get(i).size();
+            }
+            System.out.println("Size Path "+i+ " =" + v[i]);
+            totalpath += v[i];
+        }
+        System.out.println("Total Path " + totalpath);
+
+        //Check Input
+//        List<List<List<Float>>> ListofListB = new ArrayList<>();
+//        for (int i = 0; i < m; i++) {
+//            List<List<Float>> ListB = new ArrayList<>();
+//            int sensor = listSenSor.get(i);
 //            for (int j = 0; j < n; j++) {
-//                for (int k = 0; k < Vmax; k++) {
-//                    if (k < v[j]) {
-//                        t[j][k] = cplex.numVar(0, Float.MAX_VALUE);
-//                    } else {
-//                        t[j][k] = cplex.numVar(-1.0, -1.0);
-//                    }
-//                }
-//            }
-//
-//            //Define Objective
-//            IloNumVar object = cplex.numVar(0, Float.MAX_VALUE);
-//            IloLinearNumExpr objective = cplex.linearNumExpr();
-//            objective.addTerm(1.0, object);
-//            
-//            cplex.addMaximize(objective);
-//            
-//            //Contraint
-//            IloLinearNumExpr[] arrayExpress = new IloLinearNumExpr[m];
-//            for (int i = 0; i < m; i++) {
-//                arrayExpress[i] = cplex.linearNumExpr();
-//                int sensor = listSenSor.get(i);
-//                for (int j = 0; j < n; j++) {
-//                    List<PathItem> listYj = listPathY.get(j);
-//                    for (int k = 0; k < v[j]; k++) {
-//                    	float value = getEnergyConsumer(listYj.get(k).getPath(), sensor);
-//                        //float value = ListofListB.get(i).get(j).get(k);
-//                        arrayExpress[i].addTerm(value, t[j][k]);
-//                    }
-//                }
-//                cplex.addLe(arrayExpress[i], valueE0);
-//            }
-//            
-//            IloLinearNumExpr[] express = new IloLinearNumExpr[n];
-//            for (int j = 0; j < n; j++) {
-//                express[j] = cplex.linearNumExpr();
+//                List<Float> lsB = new ArrayList<>();
+//                List<PathItem> listYj = listPathY.get(j);
 //                for (int k = 0; k < v[j]; k++) {
-//                    express[j].addTerm(1.0, t[j][k]);
+//                    float value = getEnergyConsumer(listYj.get(k).getPath(), sensor);
+//                    lsB.add(value);
 //                }
-//                cplex.addLe(object,express[j]);
-//
+//                ListB.add(lsB);
 //            }
-//
-//            if (cplex.solve()) {
-//
-//                System.out.println("value: " + cplex.getObjValue());
-//                double[] Time = new double[n];
-//                
-//                for (int j = 0; j < n; j++) {
-//                    Time[j] =0;
-//                    List<Double> timeTarget = new ArrayList<>();
-//                    for (int k = 0; k < v[j]; k++) {
-//                       Time[j] += cplex.getValue(t[j][k]);
-//                       System.out.print(" "+cplex.getValue(t[j][k]));
-//                       timeTarget.add(cplex.getValue(t[j][k]));
-//                    }
-//                    System.out.println();
-//                    time.add(timeTarget);
-//                }
-//
-//                //return cplex.getValue(objective);        
-//            } else {
-//                System.out.println("Problem not solved");
-//            }
-//
-//            cplex.end();
-//
-//        } catch (IloException ex) {
-//            Logger.getLogger("LeHieu").log(Level.SEVERE, null, ex);
+//            ListofListB.add(ListB);
 //        }
-//        //Free data
-//        v = null; 
+        
+        
+//        float [][][] b = new float[m][n][Vmax];
+//        for (int i = 0; i < m; i++) {
+//            int sensor = listSenSor.get(i);
+//            for (int j = 0; j < n; j++) {
+//                List<PathItem> listYj = listPathY.get(j);
+//                for (int k = 0; k < v[j]; k++) {
+//                    b[i][j][k] = getEnergyConsumer(listYj.get(k).getPath(), sensor);
+//
+//                }
+//            }
+//        }
+      
+        try {
+            //Init model
+            IloCplex cplex = new IloCplex();
+
+            //Define variable
+            IloNumVar[][] t = new IloNumVar[n][Vmax];
+            
+      
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < Vmax; k++) {
+                    if (k < v[j]) {
+                        t[j][k] = cplex.numVar(0, Float.MAX_VALUE);
+                    } else {
+                        t[j][k] = cplex.numVar(-1.0, -1.0);
+                    }
+                }
+            }
+
+            //Define Objective
+            IloNumVar object = cplex.numVar(0, Float.MAX_VALUE);
+            IloLinearNumExpr objective = cplex.linearNumExpr();
+            objective.addTerm(1.0, object);
+            
+            cplex.addMaximize(objective);
+            
+            //Contraint
+            IloLinearNumExpr[] arrayExpress = new IloLinearNumExpr[m];
+            for (int i = 0; i < m; i++) {
+                arrayExpress[i] = cplex.linearNumExpr();
+                int sensor = listSenSor.get(i);
+                for (int j = 0; j < n; j++) {
+                    List<PathItem> listYj = listPathY.get(j);
+                    for (int k = 0; k < v[j]; k++) {
+                    	float value = getEnergyConsumer(listYj.get(k).getPath(), sensor);
+                        //float value = ListofListB.get(i).get(j).get(k);
+                        arrayExpress[i].addTerm(value, t[j][k]);
+                    }
+                }
+                cplex.addLe(arrayExpress[i], valueE0);
+            }
+            
+            IloLinearNumExpr[] express = new IloLinearNumExpr[n];
+            for (int j = 0; j < n; j++) {
+                express[j] = cplex.linearNumExpr();
+                for (int k = 0; k < v[j]; k++) {
+                    express[j].addTerm(1.0, t[j][k]);
+                }
+                cplex.addLe(object,express[j]);
+
+            }
+
+            if (cplex.solve()) {
+
+                System.out.println("value: " + cplex.getObjValue());
+                double[] Time = new double[n];
+                
+                for (int j = 0; j < n; j++) {
+                    Time[j] =0;
+                    List<Double> timeTarget = new ArrayList<>();
+                    for (int k = 0; k < v[j]; k++) {
+                       Time[j] += cplex.getValue(t[j][k]);
+                       System.out.print(" "+cplex.getValue(t[j][k]));
+                       timeTarget.add(cplex.getValue(t[j][k]));
+                    }
+                    System.out.println();
+                    time.add(timeTarget);
+                }
+
+                //return cplex.getValue(objective);        
+            } else {
+                System.out.println("Problem not solved");
+            }
+
+            cplex.end();
+
+        } catch (IloException ex) {
+            Logger.getLogger("LeHieu").log(Level.SEVERE, null, ex);
+        }
+        //Free data
+        v = null; 
         
         return time;
     }
