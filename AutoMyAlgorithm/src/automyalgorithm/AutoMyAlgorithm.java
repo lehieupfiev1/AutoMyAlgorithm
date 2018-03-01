@@ -36,7 +36,7 @@ public class AutoMyAlgorithm {
         MyAlgorithm algorithm = new MyAlgorithm();
         initData();
         //Chay test case tu 6 den 10
-        for (int i = 6; i <= 7; i++) {
+        for (int i = 5; i <= 5; i++) {
             try {
                 System.out.println("Test case "+i+"---------------------------");
                 //Cai dat ten File
