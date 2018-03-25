@@ -33,10 +33,11 @@ public class AutoMyAlgorithm {
     public static void main(String[] args) {
 
         // TODO code application logic here
-        MyAlgorithm algorithm = new MyAlgorithm();
+        //MyAlgorithm algorithm = new MyAlgorithm();
+        MyAlgorithm_v2 algorithm = new MyAlgorithm_v2();
         initData();
         //Chay test case tu 6 den 10
-        for (int i = 5; i <= 5; i++) {
+        for (int i = 9; i <= 9; i++) {
             try {
                 System.out.println("Test case "+i+"---------------------------");
                 //Cai dat ten File
@@ -53,7 +54,7 @@ public class AutoMyAlgorithm {
                 Logger.getLogger(AutoMyAlgorithm.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
-                writeResultFile(mPath+"result.txt", i, timeRuning, timeLifeOn); //Url luu file input duoc sinh ra
+                writeResultFile(mPath+"MyAlgorithm.txt", i, timeRuning, timeLifeOn); //Url luu file input duoc sinh ra
                 resetData();
             } catch (IOException ex) {
                 Logger.getLogger(AutoMyAlgorithm.class.getName()).log(Level.SEVERE, null, ex);

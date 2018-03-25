@@ -1,0 +1,6 @@
+
+*.class
+/AutoMyAlgorithm/nbproject/private/
+/AutoMyAlgorithm/build/classes/
+
+/AutoMyAlgorithm/dist/
